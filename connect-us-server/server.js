@@ -47,4 +47,13 @@ io.on('connection', (socket) => {
             activeUsers: peers
         });
     });
+
+    //listeners related with direct call
+    socket.on('pre-offer', (data) => {
+        console.log('pro-offer handled');
+        io.to(data.callee.socketId).emit('pre-offer', {
+            callerUsername: data.caller.username,
+            callerSocketId: socket.id
+        });
+    });
 });

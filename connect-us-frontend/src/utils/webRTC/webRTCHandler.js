@@ -1,6 +1,6 @@
 import store from '../../store/store';
-import { callStates, setCallState, setLocalStream } from "../../store/actions/callActions";
-
+import { callStates, setCallState, setCallerUsername, setCallingDialogVisible, setLocalStream } from "../../store/actions/callActions";
+import * as wss from '../wssConnection/wssConnection'
 const defaultConstrains = {
     video: true,
     audio: true
@@ -22,4 +22,24 @@ export const getLocalStream = () => {
         console.log('error, error ocurred while trying to get an access to get local stream');
         console.log(err);
     });
+};
+
+let connectedUserSocketId;
+
+export const callToOtherUser = (calleeDetails) => {
+    connectedUserSocketId = calleeDetails.socketId;
+    store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
+    store.dispatch(setCallingDialogVisible(true));
+    wss.sendPreOffer({
+        callee:calleeDetails,
+        caller: {
+            username: store.getState().dashboard.username
+        }
+    });
+};
+
+export const handlePreOffer = (data) => {
+    connectedUserSocketId = data.callerSocketId;
+    store.dispatch(setCallerUsername(data.callerUsername));
+    store.dispatch(setCallState(callStates.CALL_REQUESTED));
 };
