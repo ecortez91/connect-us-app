@@ -17,9 +17,25 @@ const io = socket(server, {
    } 
 });
 
+const peers = [];
+const broadcastEventTypes = {
+    ACTIVE_USERS: 'ACTIVE_USERS',
+};
+
 io.on('connection', (socket) => {
     socket.emit('connection', null);
     console.log('new user connected');
     console.log(socket.id);
-}
-)
+    socket.on('register-new-user', (data) => {
+        peers.push({
+            username: data.username,
+            socketId: data.socketId
+        });
+        console.log("Registered new user");
+        console.log(peers);
+        io.sockets.emit('broadcast', {
+            event: broadcastEventTypes.ACTIVE_USERS,
+            activeUsers: peers
+        })
+    });
+});
