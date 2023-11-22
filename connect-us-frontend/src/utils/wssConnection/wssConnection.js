@@ -32,7 +32,6 @@ export const registerNewUser = (username) => {
 const handleBroadcastEvents = (data) => {
     switch (data.event) {
         case broadcastEventTypes.ACTIVE_USERS:
-            console.log('inside activeUsers')
             const activeUsers = data.activeUsers.filter(activeUser => activeUser.socketId !== socket.id);
             store.dispatch(dashboardActions.setActiveUsers(activeUsers));
             break;
