@@ -1,14 +1,15 @@
 import React from 'react';
 
 import './IncomingCallDialog.css';
+import { acceptIncomingCallRequest, rejectIncomingCallRequest } from '../../../utils/webRTC/webRTCHandler';
 
 const IncomingCallDialog = ( {callerUsername} ) => {
     const handleAcceptButtonPressed = () => {
-        //accept the call
+        acceptIncomingCallRequest();
     }
     
     const handleRejectButtonPressed = () => {
-        //deny the call
+        rejectIncomingCallRequest();
     }
     return (
         <div className='direct_call_dialog background_secondary_color'>
