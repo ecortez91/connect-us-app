@@ -16,9 +16,6 @@ const Dashboard = () => {
                 <div className="dashboard_content_container">
                   <DirectCall />
                 </div>
-                <div className="dashboard_rooms_container background_secondary_color">
-                  Rooms
-                </div>
             </div>
             <div className="dashboard_right_section background_secondary_color">
               <div className="dashboard_active_users_list">
