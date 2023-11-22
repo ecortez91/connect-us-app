@@ -1,4 +1,4 @@
-import { compose, createStore } from 'redux';
+import { createStore } from 'redux';
 import mainReducer from './reducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
