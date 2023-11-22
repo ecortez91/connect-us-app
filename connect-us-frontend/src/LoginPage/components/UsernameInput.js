@@ -1,7 +1,7 @@
 import React from "react";
 
-const UsernameInput= (props) => {
-    const {username, setUsername} = props;
+const UsernameInput = (props) => {
+    const { username, setUsername } = props;
     return (
         <div className="login-page_input_container">
             <input 
