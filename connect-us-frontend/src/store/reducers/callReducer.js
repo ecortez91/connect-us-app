@@ -8,7 +8,10 @@ const initState = {
     callRejected: {
         rejected: false,
         reason: ''
-    }
+    },
+    remoteStream: null,
+    localCameraEnabled: true,
+    localMicrophoneEnabled: true
 };
 
 const reducer = (state = initState, action) => {
@@ -42,6 +45,16 @@ const reducer = (state = initState, action) => {
             return {
                 ...state,
                 remoteStream: action.remoteStream
+            };
+        case callActions.CALL_SET_LOCAL_CAMERA_ENABLED:
+            return {
+                ...state,
+                localCameraEnabled: action.enabled
+            };
+        case callActions.CALL_SET_LOCAL_MICROPHONE_ENABLED:
+            return {
+                ...state,
+                localMicrophoneEnabled: action.enabled
             };
         default:
             return state;
