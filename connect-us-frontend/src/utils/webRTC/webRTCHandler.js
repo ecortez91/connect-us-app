@@ -1,5 +1,5 @@
 import store from '../../store/store';
-import { resetCallDataState, callStates, setCallRejected, setCallState, setCallerUsername, setCallingDialogVisible, setLocalStream, setRemoteStream } from "../../store/actions/callActions";
+import { resetCallDataState, callStates, setCallRejected, setCallState, setCallerUsername, setCallingDialogVisible, setLocalStream, setRemoteStream, setMessage } from "../../store/actions/callActions";
 import * as wss from '../wssConnection/wssConnection';
 
 const preOfferAnswers = {
@@ -40,6 +40,7 @@ const configuration = {
 
 let peerConnection;
 let connectedUserSocketId;
+let dataChannel;
 
 export const callToOtherUser = (calleeDetails) => {
     connectedUserSocketId = calleeDetails.socketId;
@@ -64,7 +65,23 @@ const createPeerConnection = () => {
 
     peerConnection.ontrack = ({streams: [stream]}) => {
         store.dispatch(setRemoteStream(stream));
-    }
+    };
+
+    peerConnection.ondatachannel = (event) => {
+        const dataChannel = event.channel;
+        dataChannel.onopen = () => {
+            console.log('peer connection is read to receive data channel messages');
+        };
+
+        dataChannel.onmessage = (event) => {
+            store.dispatch(setMessage(true, event.data));
+        };
+    };
+
+    dataChannel = peerConnection.createDataChannel('chat');
+    dataChannel.onopen = () => {
+        console.log('chat data channel successfully opened');
+    };
     
     peerConnection.onicecandidate = (event) => {
         console.log("getting candidates from stun server");
@@ -200,3 +217,7 @@ export const resetCallData = () => {
     connectedUserSocketId = null;
     store.dispatch(setCallState(callStates.CALL_AVAILABLE));
 };
+
+export const sendMessageUsingDataChannel = (message) => {
+    dataChannel.send(message);
+}

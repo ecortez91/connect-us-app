@@ -14,6 +14,7 @@ export const CALL_SET_REMOTE_STREAM = 'CALL.SET_REMOTE_STREAM';
 export const CALL_SET_LOCAL_MICROPHONE_ENABLED = 'CALL.SET_LOCAL_MICROPHONE_ENABLEDSET_REMOTE_STREAM';
 export const CALL_SET_LOCAL_CAMERA_ENABLED = 'CALL.SET_LOCAL_CAMERA_ENABLEDSET_REMOTE_STREAM';
 export const CALL_RESET_CALL_DATA = 'CALL.RESET_CALL_DATA';
+export const CALL_SET_CHAT_MESSAGE = 'CALL.SET_CHAT_MESSAGE';
 
 export const setLocalStream = (localStream) => {
     return {
@@ -78,4 +79,14 @@ export const resetCallDataState = () => {
     return {
         type: CALL_RESET_CALL_DATA
     }
+}
+
+export const setMessage = (messageReceived, messageContent) => {
+    return {
+        type: CALL_SET_CHAT_MESSAGE,
+        message: {
+            received: messageReceived,
+            content: messageContent
+        }
+    };
 }

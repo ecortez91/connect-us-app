@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import DashboardInformation from "./components/DashboardInformation/DashboardInformation";
 import { callStates } from "../store/actions/callActions";
 
-import './Dashboard.css'
+import './Dashboard.css';
 
 const Dashboard = ( {username, callState} ) => {
   useEffect(() => {

@@ -11,7 +11,11 @@ const initState = {
     },
     remoteStream: null,
     localCameraEnabled: true,
-    localMicrophoneEnabled: true
+    localMicrophoneEnabled: true,
+    message: {
+        received: false,
+        content: ''
+    }
 };
 
 const reducer = (state = initState, action) => {
@@ -65,6 +69,11 @@ const reducer = (state = initState, action) => {
                 localCameraEnabled: true,
                 callingDialogVisible: false
             }
+        case callActions.CALL_SET_CHAT_MESSAGE:
+            return {
+                ...state,
+                message: action.message
+            };
         default:
             return state;
     }
