@@ -2,6 +2,7 @@ import React from 'react';
 
 import { MdCallEnd, MdMic, MdMicOff, MdVideocam, MdVideocamOff } from 'react-icons/md';
 import ConversationButton from './ConversationButton';
+import { hangUp } from '../../../utils/webRTC/webRTCHandler';
 
 const styles = {
   buttonContainer: {
@@ -39,12 +40,16 @@ const ConversationButtons = (props) => {
         setCameraEnabled(!cameraEnabled);
     }
 
+    const handleHangUpButtonPressed = () => {
+        hangUp();
+    }
+
     return (
         <div style={styles.buttonContainer}>
             <ConversationButton onClickHandler={handleMicButtonPressed}>
                 {localMicrophoneEnabled ? <MdMic style={styles.icon}  /> : <MdMicOff style={styles.icon} /> }
             </ConversationButton>
-            <ConversationButton>
+            <ConversationButton onClickHandler={handleHangUpButtonPressed}>
                 <MdCallEnd style={styles.icon} />
             </ConversationButton>
             <ConversationButton onClickHandler={handleCameraButtonPressed}>

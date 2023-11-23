@@ -9,7 +9,6 @@ const ActiveUsersListItem = (props) => {
     callToOtherUser(activeUser);
   };
 
-  console.log("activeUser");
   console.log(activeUser);
 
   return (

@@ -173,7 +173,27 @@ export const checkIfCallIsPossible = () => {
     }
 };
 
+export const handleUserHangedUp = () => {
+    resetCallDataAfterHangUp();
+}
+
+export const hangUp = () => {
+    wss.sendUserHangedUp({
+        connectedUserSocketId: connectedUserSocketId
+    });
+
+    resetCallDataAfterHangUp();
+}
+
+const resetCallDataAfterHangUp = () => {
+    store.dispatch(setRemoteStream(null));
+    peerConnection.close();
+    peerConnection = null;
+    createPeerConnection();
+    resetCallData();
+}
+
 export const resetCallData = () => {
     connectedUserSocketId = null;
     store.dispatch(setCallState(callStates.CALL_AVAILABLE));
-}
+};
