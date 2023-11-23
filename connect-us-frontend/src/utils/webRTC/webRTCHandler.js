@@ -24,13 +24,21 @@ export const getLocalStream = () => {
     .then(stream => {
         store.dispatch(setLocalStream(stream));
         store.dispatch(setCallState(callStates.CALL_AVAILABLE));
+        createPeerConnection();
     })
     .catch(err => {
-        console.log('error, error ocurred while trying to get an access to get local stream');
+        console.log('error, error occurred while trying to get an access to get local stream');
         console.log(err);
     });
 };
 
+const configuration = {
+    iceServers: [{
+        urls: 'stun:stun.l.google.com:13902'
+    }]
+};
+
+let peerConnection;
 let connectedUserSocketId;
 
 export const callToOtherUser = (calleeDetails) => {
@@ -45,6 +53,35 @@ export const callToOtherUser = (calleeDetails) => {
     });
 };
 
+const createPeerConnection = () => {
+    peerConnection = new RTCPeerConnection(configuration);
+
+    const localStream = store.getState().call.localStream;
+
+    for (const track of localStream.getTracks()) {
+        peerConnection.addTrack(track, localStream);
+    }
+
+    peerConnection.ontrack = ({streams: [stream]}) => {
+        //dispatch remote stream in our store
+    }
+    
+    peerConnection.onicecandidate = (event) => {
+        console.log("getting candidates from stun server", event.candidate);
+        if (event.candidate) {
+            wss.sendWebRTCCandidate({
+                candidate: event.candidate,
+                connectedUserSocketId: connectedUserSocketId 
+            });
+        }
+    };
+
+    peerConnection.onconnectionstatechange = (event) => {
+        if (peerConnection.connectionState === 'connected') {
+            console.log('successfully connected with other peer');
+        }
+    };
+};
 
 export const handlePreOffer = (data) => {
 
@@ -76,11 +113,10 @@ export const acceptIncomingCallRequest = () => {
 };
 
 export const handlePreOfferAnswer = (data) => {
-
     store.dispatch(setCallingDialogVisible(false));
 
     if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
-        //send webRTC offer
+        sendOffer();
     } else {
         let rejectionReason;
         if (data.answer === preOfferAnswers.CALL_NOT_AVAILABLE) {
@@ -92,8 +128,44 @@ export const handlePreOfferAnswer = (data) => {
             rejected: true,
             reason: rejectionReason
         }));
+        resetCallData();
     }
 }
+
+const sendOffer = async () => {
+    const offer = await peerConnection.createOffer();
+    await peerConnection.setLocalDescription(offer);
+    console.log('setting up localDescription offer', offer);
+    wss.sendWebRTCOffer({
+        calleeSocketId: connectedUserSocketId,
+        offer: offer
+    });
+};
+
+export const handleOffer = async (data) => {
+    await  peerConnection.setRemoteDescription(data.offer);
+    console.log('setting up remoteDescription', data.offer);
+    const answer = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answer);
+    console.log('setting up localDescription answer', answer);
+    wss.sendWebRTCAnswer({
+        callerSocketId: connectedUserSocketId,
+        answer: answer
+    });
+};
+
+export const handleAnswer = async (data) => {
+    await peerConnection.setRemoteDescription(data.answer);
+};
+
+export const handleCandidate = async (data) => {
+    try {
+        console.log('adding ice candidates', data.candidate);
+        await peerConnection.addIceCandidate(data.candidate);
+    } catch (err) {
+        console.error('error occurred when trying to add received ice candidate', err);
+    }
+};
 
 export const checkIfCallIsPossible = () => {
     if (store.getState().call.localSteam === null || store.getState().call.callState !== callStates.CALL_AVAILABLE) {
