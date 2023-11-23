@@ -3,7 +3,7 @@ import store from '../../store/store';
 import * as dashboardActions from '../../store/actions/dashboardActions';
 import * as webRTCHandler from '../webRTC/webRTCHandler';
 
-const SERVER = 'http://localhost:5000';
+const SERVER = process.env.REACT_APP_LOCALHOST;
 
 const broadcastEventTypes = {
     ACTIVE_USERS: 'ACTIVE_USERS',
