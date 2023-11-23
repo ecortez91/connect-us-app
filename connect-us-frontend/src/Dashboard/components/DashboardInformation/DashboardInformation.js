@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useHistory } from 'react-router-dom';
 import './DashboardInformation.css';
 
 const DashboardInformation = ({ username }) => {
