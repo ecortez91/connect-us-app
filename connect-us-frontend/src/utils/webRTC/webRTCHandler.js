@@ -1,5 +1,5 @@
 import store from '../../store/store';
-import { callStates, setCallRejected, setCallState, setCallerUsername, setCallingDialogVisible, setLocalStream, setRemoteStream } from "../../store/actions/callActions";
+import { resetCallDataState, callStates, setCallRejected, setCallState, setCallerUsername, setCallingDialogVisible, setLocalStream, setRemoteStream } from "../../store/actions/callActions";
 import * as wss from '../wssConnection/wssConnection';
 
 const preOfferAnswers = {
@@ -166,7 +166,7 @@ export const handleCandidate = async (data) => {
 };
 
 export const checkIfCallIsPossible = () => {
-    if (store.getState().call.localSteam === null || store.getState().call.callState !== callStates.CALL_AVAILABLE) {
+    if (store.getState().call.localStream === null || store.getState().call.callState !== callStates.CALL_AVAILABLE) {
         return false;
     } else {
         return true;
@@ -186,11 +186,14 @@ export const hangUp = () => {
 }
 
 const resetCallDataAfterHangUp = () => {
-    store.dispatch(setRemoteStream(null));
+    store.dispatch(resetCallDataState());
     peerConnection.close();
     peerConnection = null;
     createPeerConnection();
     resetCallData();
+    const localStream = store.getState().call.localStream;
+    localStream.getVideoTracks()[0].enabled = true;
+    localStream.getAudioTracks()[0].enabled = true;
 }
 
 export const resetCallData = () => {

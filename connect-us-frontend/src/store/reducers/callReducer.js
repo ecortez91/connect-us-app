@@ -56,6 +56,15 @@ const reducer = (state = initState, action) => {
                 ...state,
                 localMicrophoneEnabled: action.enabled
             };
+        case callActions.CALL_RESET_CALL_DATA:
+            return {
+                ...state,
+                remoteStream: null,
+                callerUsername: '',
+                localMicrophoneEnabled: true,
+                localCameraEnabled: true,
+                callingDialogVisible: false
+            }
         default:
             return state;
     }

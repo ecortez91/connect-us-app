@@ -1,15 +1,16 @@
 import React from 'react';
 import userAvatar from '../../../resources/userAvatar.png';
 import { callToOtherUser } from '../../../utils/webRTC/webRTCHandler';
+import { callStates } from '../../../store/actions/callActions';
 
 const ActiveUsersListItem = (props) => {
-  const { activeUser } = props;
+  const { activeUser, callState } = props;
 
   const handleListItemPressed = () => {
-    callToOtherUser(activeUser);
+    if (callState === callStates.CALL_AVAILABLE) {
+      callToOtherUser(activeUser);
+    }
   };
-
-  console.log(activeUser);
 
   return (
     <div className='active_user_list_item' onClick={handleListItemPressed}>
