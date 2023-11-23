@@ -2,8 +2,7 @@ const twilio = require('twilio');
 const cors = require('cors');
 const express = require('express');
 const socket = require('socket.io');
-
-const {REACT_APP_ACCOUNT_S_ID, REACT_APP_AUTH_TOKEN } = process.env;
+require('dotenv').config();
 
 const PORT = process.env.PORT|| 5000;
 
@@ -15,8 +14,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/get-turn-credentials', (req, res) => {
-    const accountSid = REACT_APP_ACCOUNT_S_ID;
-    const authToken = REACT_APP_ACCOUNT_S_ID;
+    const accountSid = process.env.TWILIO_ACCOUNT_S_ID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
     const client = twilio(accountSid, authToken);
 
     client.tokens.create().then((token) => res.send({ token }));
