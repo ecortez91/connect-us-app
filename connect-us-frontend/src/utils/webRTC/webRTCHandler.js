@@ -1,5 +1,5 @@
 import store from '../../store/store';
-import { callStates, setCallRejected, setCallState, setCallerUsername, setCallingDialogVisible, setLocalStream } from "../../store/actions/callActions";
+import { callStates, setCallRejected, setCallState, setCallerUsername, setCallingDialogVisible, setLocalStream, setRemoteStream } from "../../store/actions/callActions";
 import * as wss from '../wssConnection/wssConnection';
 
 const preOfferAnswers = {
@@ -63,11 +63,11 @@ const createPeerConnection = () => {
     }
 
     peerConnection.ontrack = ({streams: [stream]}) => {
-        //dispatch remote stream in our store
+        store.dispatch(setRemoteStream(stream));
     }
     
     peerConnection.onicecandidate = (event) => {
-        console.log("getting candidates from stun server", event.candidate);
+        console.log("getting candidates from stun server");
         if (event.candidate) {
             wss.sendWebRTCCandidate({
                 candidate: event.candidate,
@@ -110,6 +110,7 @@ export const acceptIncomingCallRequest = () => {
         callerSocketId: connectedUserSocketId,
         answer: preOfferAnswers.CALL_ACCEPTED
     });
+    store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
 };
 
 export const handlePreOfferAnswer = (data) => {
@@ -135,7 +136,6 @@ export const handlePreOfferAnswer = (data) => {
 const sendOffer = async () => {
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
-    console.log('setting up localDescription offer', offer);
     wss.sendWebRTCOffer({
         calleeSocketId: connectedUserSocketId,
         offer: offer
@@ -144,10 +144,8 @@ const sendOffer = async () => {
 
 export const handleOffer = async (data) => {
     await  peerConnection.setRemoteDescription(data.offer);
-    console.log('setting up remoteDescription', data.offer);
     const answer = await peerConnection.createAnswer();
     await peerConnection.setLocalDescription(answer);
-    console.log('setting up localDescription answer', answer);
     wss.sendWebRTCAnswer({
         callerSocketId: connectedUserSocketId,
         answer: answer
