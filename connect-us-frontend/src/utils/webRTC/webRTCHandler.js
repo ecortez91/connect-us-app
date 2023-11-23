@@ -53,7 +53,7 @@ const createPeerConnection = () => {
     const turnServers = getTurnServers();
     const configuration = {
         iceServers: [...turnServers, { url:'stun: stun.1und1.de:3478' }],   //url grabbed from https://gist.github.com/mondain/b0ec1cf5f60ae726202e
-        //iceTransportPolicy: 'relay'                                         //  
+        iceTransportPolicy: 'relay'
         
     };
 

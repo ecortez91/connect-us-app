@@ -10,9 +10,11 @@ import axios from 'axios';
 import './Dashboard.css';
 import { setTurnServes } from "../utils/webRTC/TURN";
 
+const { REACT_APP_LOCALHOST } = process.env;
+
 const Dashboard = ( {username, callState} ) => {
   useEffect(() => {
-    axios.get('http://localhost:5000/api/get-turn-credentials').then(
+    axios.get(`${REACT_APP_LOCALHOST}/api/get-turn-credentials`).then(
       responseData => {
         console.log(responseData);
         setTurnServes(responseData.data.token.iceServers);

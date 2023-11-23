@@ -3,6 +3,8 @@ const cors = require('cors');
 const express = require('express');
 const socket = require('socket.io');
 
+const {REACT_APP_ACCOUNT_S_ID, REACT_APP_AUTH_TOKEN } = process.env;
+
 const PORT = process.env.PORT|| 5000;
 
 const app = express();
@@ -13,8 +15,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/get-turn-credentials', (req, res) => {
-    const accountSid = 'ACc4ff6252787548b889112a9b3a96e659';
-    const authToken = '8841473748d3006bf6a5320296e9a4ac';
+    const accountSid = REACT_APP_ACCOUNT_S_ID;
+    const authToken = REACT_APP_ACCOUNT_S_ID;
     const client = twilio(accountSid, authToken);
 
     client.tokens.create().then((token) => res.send({ token }));
@@ -22,7 +24,6 @@ app.get('/api/get-turn-credentials', (req, res) => {
 
 const server = app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
 });
 
 const io = socket(server, {
