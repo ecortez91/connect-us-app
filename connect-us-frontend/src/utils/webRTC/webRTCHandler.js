@@ -33,6 +33,19 @@ export const getLocalStream = () => {
     });
 };
 
+export const getLocalAudioStream = () => {
+    navigator.mediaDevices.getUserMedia(audioConstraints)
+    .then(stream => {
+        store.dispatch(setLocalStream(stream));
+        store.dispatch(setCallState(callStates.CALL_AVAILABLE));
+        createPeerConnection();
+    })
+    .catch(err => {
+        console.log('error, error occurred while trying to get an access to get local stream');
+        console.log(err);
+    });
+};
+
 let peerConnection;
 let connectedUserSocketId;
 let dataChannel;
@@ -219,7 +232,7 @@ const resetCallDataAfterHangUp = () => {
     createPeerConnection();
     resetCallData();
     const localStream = store.getState().call.localStream;
-    localStream.getVideoTracks()[0].enabled = true;
+    if (localStream.getVideoTracks()[0] !== undefined) localStream.getVideoTracks()[0].enabled = true;
     localStream.getAudioTracks()[0].enabled = true;
 }
 

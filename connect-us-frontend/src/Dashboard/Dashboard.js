@@ -18,6 +18,7 @@ const Dashboard = ( {username, callState} ) => {
         console.log(responseData);
         setTurnServes(responseData.data.token.iceServers);
         webRTCHandler.getLocalStream();
+        //webRTCHandler.getLocalAudioStream();
       }
     ).catch(err => console.log(err));
   }, []);
