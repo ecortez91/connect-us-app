@@ -8,12 +8,16 @@ Welcome! Thanks for using connect-us-app, a video chat web app built using:
 - Git
 - Heroku
 
+
 # What is Connect Us!?
 
 This webapp even works on mobile phones as shown in the images below, it works with calls in the same network or different networks. With this app you're able to receive and make calls to other connected users securely. I've deployed the backend as well as the frontend into Heroku and it's up and running for you to test this app.
 
+
 # Deployment made into Heroku (Demo site)
+
 https://connect-us-frontend-8c648836da4c.herokuapp.com/
+
 
 # Installing steps in Windows:
 
@@ -26,6 +30,7 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 
 
 # How to test app once 
+
 - Login with user1 in  ```http://localhost:3000```
 - Open a new tab and go to ```http://localhost:3000/```
 - Login with user2
@@ -37,7 +42,7 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 - Users that logout automatically are removed from the "connected" list
 
 
-#Images
+# Images
 
 ![image](https://github.com/ecortez91/connect-us-app/assets/7227006/822879a2-1c0c-4bd0-aab6-fa5d580a2ed2)
 
