@@ -7,7 +7,7 @@ const SubmitButton = ({ handleSubmitButtonPressed }) => {
         className='login-page_button background_main_color text_main_color'
         onClick={handleSubmitButtonPressed}
       >
-        Connect
+        Login
       </button>
     </div>
 

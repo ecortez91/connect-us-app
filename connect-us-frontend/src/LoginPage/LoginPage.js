@@ -24,7 +24,7 @@ const LoginPage = ({ saveUsername }) => {
     <div className='login-page_container background_main_color'>
       <div className='login-page_login_box background_secondary_color'>
         <div className='login-page_title_container'>
-          <h2>Connect Us!</h2>
+          <h2>Welcome to Connect Us!</h2>
         </div>
         <UsernameInput username={username} setUsername={setUsername} />
         <SubmitButton handleSubmitButtonPressed={handleSubmitButtonPressed} />

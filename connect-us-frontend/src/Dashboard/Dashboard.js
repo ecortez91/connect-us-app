@@ -11,8 +11,8 @@ import './Dashboard.css';
 import { setTurnServes } from "../utils/webRTC/TURN";
 
 const Dashboard = ( {username, callState} ) => {
-  const serverUrl = process.env.REACT_APP_LOCALHOST;
   useEffect(() => {
+    const serverUrl = process.env.REACT_APP_LOCALHOST;
     axios.get(`${serverUrl}/api/get-turn-credentials`).then(
       responseData => {
         console.log(responseData);
@@ -22,6 +22,10 @@ const Dashboard = ( {username, callState} ) => {
     ).catch(err => console.log(err));
   }, []);
 
+ const handleLogout = () => {
+    window.location.href = "/";
+  };
+
     return (
         <div className="dashboard_container background_main_color">
             <div className="dashboard_left_section">
@@ -29,6 +33,7 @@ const Dashboard = ( {username, callState} ) => {
                   <DirectCall />
                   { callState !== callStates.CALL_IN_PROGRESS && <DashboardInformation username={username} /> }
                 </div>
+                <a href="#" onClick={handleLogout} style={ { paddingLeft: '25px', textDecoration:'none', color: 'whitesmoke', cursor:'pointer'} }>Click here to Logout</a>
             </div>
             <div className="dashboard_right_section background_secondary_color">
               <div className="dashboard_active_users_list">
