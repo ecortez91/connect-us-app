@@ -48,10 +48,11 @@ export const connectWithWebSocket = () => {
     });
 };
 
-export const registerNewUser = (username) => {
+export const registerNewUser = (username, avatarUrl) => {
     socket.emit('register-new-user', {
         username: username,
-        socketId: socket.id
+        socketId: socket.id,
+        avatarUrl: avatarUrl
     });
 };
 

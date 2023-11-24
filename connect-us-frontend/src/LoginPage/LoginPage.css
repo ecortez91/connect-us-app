@@ -52,6 +52,17 @@
   padding: 10px 10px;
 }
 
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
 .login-page_button_container {
   width: 80%;
   display: flex;

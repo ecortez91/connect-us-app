@@ -44,7 +44,8 @@ io.on('connection', (socket) => {
     socket.on('register-new-user', (data) => {
         peers.push({
             username: data.username,
-            socketId: data.socketId
+            socketId: data.socketId,
+            avatarUrl: data.avatarUrl
         });
         console.log("Registered new user");
         console.log(peers);
