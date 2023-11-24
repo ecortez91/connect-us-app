@@ -22,6 +22,7 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 # Installing steps in Windows:
 
 - Download this repo
+- Add the ```.env``` file (sent via email) into the root folder in ```contact-us-server```
 - Go to the contact-us-server folder and using the terminal install the packages executing: ```npm install```
 - Start the server running: ```npm start```
 - Go to the contact-us-frontend folder and using the terminal install the packages executing: ```npm install```
