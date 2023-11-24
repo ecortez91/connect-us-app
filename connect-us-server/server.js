@@ -55,6 +55,41 @@ io.on('connection', (socket) => {
         });
     });
 
+    socket.on('set-username-busy', (data) => {
+        peers = peers.map(peer=> {
+            if (peer.username === data.username.username && !peer.username.includes(' (Busy)')) {
+                let newUsername = data.username.username + ' (Busy)';
+                return { ...peer, username: newUsername };
+            }
+            return peer;
+        });
+       io.sockets.emit('broadcast', {
+            event: broadcastEventTypes.ACTIVE_USERS,
+            activeUsers: peers
+        });
+    });
+
+    socket.on('set-username-normal', (data) => {
+        peers = peers.map(peer=> {
+            if (peer.username.replace(' (Busy)', '') === data.username) {
+                let newUsername = peer.username.replace(' (Busy)', '');
+                return { ...peer, username: newUsername };
+            }
+            return peer;
+        });
+        peers = peers.map(peer=> {
+            if (peer.username.includes(' (Busy)')) {
+                let newUsername = peer.username.replace(' (Busy)', '');
+                return { ...peer, username: newUsername };
+            }
+            return peer;
+        });
+       io.sockets.emit('broadcast', {
+            event: broadcastEventTypes.ACTIVE_USERS,
+            activeUsers: peers
+        });
+    });
+
     socket.on('disconnect', () => {
         console.log('user disconected');
         peers = peers.filter(peer => peer.socketId !== socket.id);

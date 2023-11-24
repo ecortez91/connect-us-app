@@ -40,8 +40,8 @@ const LoginPage = ({ saveUsername, saveAvatarURL }) => {
           <h2>Welcome to Connect Us!</h2>
         </div>
         <UsernameInput username={username} setUsername={setUsername} />
-        <label for="file-upload" class="custom-file-upload">
-          <i class="fa fa-cloud-upload"></i> Select Avatar
+        <label htmlFor="file-upload" className="custom-file-upload">
+          <i className="fa fa-cloud-upload"></i> Select Avatar
         </label>
         <input id="file-upload" className="login-page_input" type="file" accept="image/*" onChange={handleAvatarChange} title='Select Avatar' alt='Select Avatar' />
         <SubmitButton handleSubmitButtonPressed={handleSubmitButtonPressed} />

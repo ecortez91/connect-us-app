@@ -56,6 +56,19 @@ export const registerNewUser = (username, avatarUrl) => {
     });
 };
 
+export const setUsernameBusy = (username) => {
+    socket.emit('set-username-busy', {
+        username: username
+    });
+};
+
+export const setUsernameNormal = (username) => {
+    socket.emit('set-username-normal', {
+        username: username,
+        otherUsernameSocketId: socket.id
+    });
+};
+
 export const sendPreOffer = (data) => {
     socket.emit('pre-offer', data);
 }

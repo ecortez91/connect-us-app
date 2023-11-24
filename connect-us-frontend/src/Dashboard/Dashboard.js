@@ -26,6 +26,10 @@ const Dashboard = ( {username, callState} ) => {
     window.location.href = "/";
   };
 
+  if (!username) {
+    window.location.href = "/";
+  }
+
     return (
         <div className="dashboard_container background_main_color">
             <div className="dashboard_left_section">

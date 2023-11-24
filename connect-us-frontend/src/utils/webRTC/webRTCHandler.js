@@ -47,6 +47,12 @@ export const callToOtherUser = (calleeDetails) => {
             username: store.getState().dashboard.username
         }
     });
+    wss.setUsernameBusy({
+        username:store.getState().dashboard.username,
+    });
+    wss.setUsernameBusy({
+        username:calleeDetails.username,
+    });
 };
 
 const createPeerConnection = () => {
@@ -121,6 +127,7 @@ export const rejectIncomingCallRequest = () => {
         callerSocketId: connectedUserSocketId,
         answer: preOfferAnswers.CALL_REJECTED
     });
+    wss.setUsernameNormal(store.getState().dashboard.username);
     resetCallData();
 };
 
@@ -194,6 +201,7 @@ export const checkIfCallIsPossible = () => {
 
 export const handleUserHangedUp = () => {
     resetCallDataAfterHangUp();
+    wss.setUsernameNormal(store.getState().dashboard.username);
 }
 
 export const hangUp = () => {

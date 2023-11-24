@@ -18,7 +18,8 @@ const ActiveUsersList = ( { activeUsers, callState } ) => {
 
 const mapStateToProps = ({ dashboard, call }) => ({
   ...dashboard,
-  ...call
+  ...call,
+  callState: call.callState,
 });
 
 export default connect(mapStateToProps)(ActiveUsersList);
