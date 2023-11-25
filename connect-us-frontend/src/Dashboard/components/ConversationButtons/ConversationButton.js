@@ -21,9 +21,9 @@ const styles = {
 };
 
 const ConversationButton = (props) => {
-    const { onClickHandler } = props;
+    const { onClickHandler, name } = props;
     return (
-        <button style={styles.button} onClick={onClickHandler}>
+        <button style={styles.button} onClick={onClickHandler} value={name}>
             {props.children}
         </button>
     );
