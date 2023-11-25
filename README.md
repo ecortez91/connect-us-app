@@ -19,6 +19,10 @@ This webapp even works on mobile phones as shown in the images below, it works w
 https://connect-us-frontend-8c648836da4c.herokuapp.com/
 
 
+# Requirements
+- Node.js (>= v14.17.6)
+
+
 # Installing steps in Windows:
 
 - Download this repo
@@ -40,7 +44,7 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 - Go to the user1 tab and a pop-up will appear where you can accept or reject the call, accept the call invitation from user2
 - You can also reject the call and the caller will get notified with a pop-up
 - A webRTC call is stablished
-- You're able to chat with the other user as well (back and forth)
+- You're able to chat with the other user as well (back and forth using a webRTC data channel [(RTCPeerConnection: createOffer() method)](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createDataChannel))
 - You have the option to make the call "AudioOnly" by disabling the video during the call
 - You have the option to mute your microphone if needed during a call
 - You also have the option to end the call
