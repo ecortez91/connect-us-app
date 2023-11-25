@@ -19,10 +19,15 @@ This webapp even works on mobile phones as shown in the images below, it works w
 https://connect-us-frontend-8c648836da4c.herokuapp.com/
 
 
+# Requirements
+- Node.js v14.17.6, download link: [(Node.js v14.17.6)](https://nodejs.org/dist/v14.17.6/)
+- A microphone and a webcam connected to the computer
+
+
 # Installing steps in Windows:
 
 - Download this repo
-- Add the ```.env``` file (sent via email) into the root folder in ```contact-us-server```
+- Add the ```.env``` file (sent via email) into the backend app (root folder of ```contact-us-server```, make sure that the filename is just ".env")
 - Go to the contact-us-server folder and using the terminal install the packages executing: ```npm install```
 - Start the server running: ```npm start```
 - Go to the contact-us-frontend folder and using the terminal install the packages executing: ```npm install```
@@ -40,7 +45,7 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 - Go to the user1 tab and a pop-up will appear where you can accept or reject the call, accept the call invitation from user2
 - You can also reject the call and the caller will get notified with a pop-up
 - A webRTC call is stablished
-- You're able to chat with the other user as well (back and forth)
+- You're able to chat with the other user as well (back and forth using a webRTC data channel [(RTCPeerConnection: createOffer() method)](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createDataChannel))
 - You have the option to make the call "AudioOnly" by disabling the video during the call
 - You have the option to mute your microphone if needed during a call
 - You also have the option to end the call
