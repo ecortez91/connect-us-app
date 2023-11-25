@@ -20,7 +20,7 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 
 
 # Requirements
-- Node.js (>= v14.17.6)
+- Node.js v14.17.6, download link: [(Node.js v14.17.6)](https://nodejs.org/dist/v14.17.6/)
 
 
 # Installing steps in Windows:
