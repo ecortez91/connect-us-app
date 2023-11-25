@@ -46,15 +46,17 @@ const ConversationButtons = (props) => {
 
     return (
         <div style={styles.buttonContainer}>
-            <ConversationButton onClickHandler={handleMicButtonPressed}>
+            { /** <ConversationButton onClickHandler={handleMicButtonPressed}>
                 {localMicrophoneEnabled ? <MdMic style={styles.icon}  /> : <MdMicOff style={styles.icon} /> }
             </ConversationButton>
+            */ }
             <ConversationButton onClickHandler={handleHangUpButtonPressed}>
                 <MdCallEnd style={styles.icon} />
             </ConversationButton>
+            {/**
             <ConversationButton onClickHandler={handleCameraButtonPressed}>
                 {localCameraEnabled ? <MdVideocam style={styles.icon} /> : <MdVideocamOff style={styles.icon} />}
-            </ConversationButton>
+            </ConversationButton> */}
         </div>
     );
 };

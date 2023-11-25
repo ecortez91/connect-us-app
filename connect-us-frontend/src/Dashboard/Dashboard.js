@@ -18,15 +18,6 @@ const Dashboard = ( {username, callState} ) => {
         console.log(responseData);
         setTurnServes(responseData.data.token.iceServers);
         webRTCHandler.getLocalStream();
-        //webRTCHandler.getLocalAudioStream();
-
-        // Sadly ran out of time to implement audio calls inside the webapp, but I have a workaround ready for you to test them :)
-        // In order to test audio-only calls, uncomment line 21 here in Dashboard.js, reload the app and now the calls will be done audio-only :D
-        // I also added the functionality to "turn off/on camera" (for video-audio calls) to simulate "audio-only calls"
-        // And added the "mute/unmute" logic as well (works on both call types, video-audio and audio-only)
-
-        //Thanks for taking the time to test this app, it was a fun 3 day challenge :D
-
       }
     ).catch(err => console.log(err));
   }, []);

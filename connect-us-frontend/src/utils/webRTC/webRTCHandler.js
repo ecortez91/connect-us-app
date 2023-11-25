@@ -20,12 +20,14 @@ const audioConstraints = {
 };
 
 
-export const getLocalStream = () => {
+export const getLocalStream = (activeUser) => {
     navigator.mediaDevices.getUserMedia(defaultConstrains)
     .then(stream => {
         store.dispatch(setLocalStream(stream));
         store.dispatch(setCallState(callStates.CALL_AVAILABLE));
         createPeerConnection();
+    }).then( () => {
+        callToOtherUser(activeUser, 'VIDEO');
     })
     .catch(err => {
         console.log('error, error occurred while trying to get an access to get local stream');
@@ -33,12 +35,18 @@ export const getLocalStream = () => {
     });
 };
 
-export const getLocalAudioStream = () => {
+export const getLocalAudioStream = (activeUser) => {
     navigator.mediaDevices.getUserMedia(audioConstraints)
     .then(stream => {
         store.dispatch(setLocalStream(stream));
         store.dispatch(setCallState(callStates.CALL_AVAILABLE));
         createPeerConnection();
+    }).then( () => {
+        navigator.mediaDevices.getUserMedia(defaultConstrains)
+        .then(stream => {
+            store.dispatch(setLocalStream(stream));
+        });
+        callToOtherUser(activeUser, 'AUDIO');
     })
     .catch(err => {
         console.log('error, error occurred while trying to get an access to get local stream');
@@ -60,6 +68,7 @@ export const callToOtherUser = (calleeDetails) => {
             username: store.getState().dashboard.username
         }
     });
+
     wss.setUsernameBusy({
         username:store.getState().dashboard.username,
     });
@@ -122,7 +131,10 @@ const createPeerConnection = () => {
 };
 
 export const handlePreOffer = (data) => {
-
+    navigator.mediaDevices.getUserMedia(defaultConstrains)
+    .then(stream => {
+        store.dispatch(setLocalStream(stream));
+    });
     if (checkIfCallIsPossible()) {
         connectedUserSocketId = data.callerSocketId;
         store.dispatch(setCallerUsername(data.callerUsername));
