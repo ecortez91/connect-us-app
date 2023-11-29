@@ -1,19 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './Chat.css'; // Import your CSS file for styling
+import './Chat.css';
 import userAvatar from '../../../resources/userAvatar.png'
 
 const Chat = (props) => {
     const { 
-        name
+        id,
+        name,
+        avatarUrl
     } = props;
+
+    const renderMessages = () => {
+    };
 
     return (
         <>
             <div className="chat-popup">
               <div className="chat-header background_secondary_color">
                <div className='chat_user_avatar_container'>
-                    <img className='chat_user_avatar' src={userAvatar} alt={name} /><div className='chat_user_name'>{name}</div>
+                    <img className='chat_user_avatar' src={avatarUrl || userAvatar} alt={name} /><div className='chat_user_name'>{name}</div>
                </div>
                <div className="chat-popup-close"><button style={{  }}>X</button> </div>
               </div>
@@ -33,7 +38,9 @@ const Chat = (props) => {
 
 function mapStoreStateToProps (state) {
     return {
-        name: state.chat.chosenChatDetails?.name
+        name: state.chat.chosenChatDetails?.name,
+        id: state.chat.chosenChatDetails?.id,
+        avatarUrl: state.chat.chosenChatDetails?.avatarUrl
     };
 }
 

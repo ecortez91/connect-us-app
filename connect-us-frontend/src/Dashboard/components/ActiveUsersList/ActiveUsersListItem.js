@@ -9,7 +9,7 @@ const ActiveUsersListItem = (props) => {
   const { activeUser, setChosenChatDetails } = props;
 
   const handleChooseActiveConversation = () => {
-    setChosenChatDetails( { id: activeUser.socketId, name: activeUser.username }, chatTypes.DIRECT );
+    setChosenChatDetails( { id: activeUser.socketId, name: activeUser.username, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
   }
 
   const handleListItemPressed = (e) => {
