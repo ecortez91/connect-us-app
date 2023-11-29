@@ -7,7 +7,8 @@ import IncomingCallDialog from '../IncomingCallDialog/IncomingCallDialog';
 import CallingDialog from '../CallingDialog/CallingDialog';
 import { callStates, setCallRejected, setLocalCameraEnabled, setLocalMicrophoneEnabled, setMessage } from '../../../store/actions/callActions'
 import ConversationButtons from '../ConversationButtons/ConversationButtons';
-import Messenger from '../Messenger/Messenger'
+import Messenger from '../Messenger/Messenger';
+import Chat from '../Chat/Chat';
 
 const DirectCall = (props) => {
     const { 
@@ -34,6 +35,7 @@ const DirectCall = (props) => {
         { callingDialogVisible && <CallingDialog /> }
         { remoteStream && callState === callStates.CALL_IN_PROGRESS && <ConversationButtons { ...props }/> }
         { remoteStream && callState === callStates.CALL_IN_PROGRESS && <Messenger setDirectCallMessage={setDirectCallMessage} message={message}/> }
+        { <Chat /> }
         </>
     );
 };

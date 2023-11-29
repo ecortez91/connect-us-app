@@ -27,7 +27,8 @@ export const getLocalStream = (activeUser) => {
         store.dispatch(setCallState(callStates.CALL_AVAILABLE));
         createPeerConnection();
     }).then( () => {
-        callToOtherUser(activeUser, 'VIDEO');
+        if (activeUser)
+            callToOtherUser(activeUser, 'VIDEO');
     })
     .catch(err => {
         console.log('error, error occurred while trying to get an access to get local stream');
@@ -49,7 +50,7 @@ export const getLocalAudioStream = (activeUser) => {
         callToOtherUser(activeUser, 'AUDIO');
     })
     .catch(err => {
-        console.log('error, error occurred while trying to get an access to get local stream');
+        console.log('error, error occurred while trying to get an access to get local audio stream');
         console.log(err);
     });
 };
