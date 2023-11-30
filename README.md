@@ -41,14 +41,13 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 - Open a new tab and go to ```http://localhost:3000/```
 - Login with user2
 - You should see the other user connected in the user list
-- Click the user1 in order to start a webRTC call
+- In the right panel, next to the user1 nickname, there are two buttons, one for audio calls and another for video calls
+- Click the audio or video call button in order to start a webRTC call
 - Go to the user1 tab and a pop-up will appear where you can accept or reject the call, accept the call invitation from user2
 - You can also reject the call and the caller will get notified with a pop-up
 - A webRTC call is stablished
 - You're able to chat with the other user as well (back and forth using a webRTC data channel [(RTCPeerConnection: createOffer() method)](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createDataChannel))
-- You have the option to make the call "AudioOnly" by disabling the video during the call
-- You have the option to mute your microphone if needed during a call
-- You also have the option to end the call
+- You have the option to end the call
 - You are able to see the users that are currently in a call (shown as "Busy")
 - You won't be able to make a call to "Busy" users
 - You have the option to logout from the app
