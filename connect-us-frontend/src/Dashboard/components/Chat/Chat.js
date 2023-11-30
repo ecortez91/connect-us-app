@@ -11,8 +11,19 @@ const Chat = (props) => {
     } = props;
 
     const renderMessages = () => {
+        // Logic to render messages in the chat window
+        // Sample messages (array of objects)
+        const messages = [
+            { sender: 'Ted', text: 'Hi there!' },
+            { sender: 'Ed', text: 'Hey, how are you?' },
+            { sender: 'Ted', text: "I'm good, thanks!" },
+        ];
+        return messages.map((message, index) => (
+          <div key={index} className={message.sender === name ? 'received' : 'sent'}>
+            {message.text}
+          </div>
+        ));
     };
-
     return (
         <>
             <div className="chat-popup">
@@ -24,7 +35,7 @@ const Chat = (props) => {
               </div>
               <div className="chat-messages">
                 {
-                    //renderMessages()
+                    renderMessages()
                 }
               </div>
               <div className="chat-input">
