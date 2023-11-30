@@ -140,5 +140,15 @@ io.on('connection', (socket) => {
         console.log('handling user hang up');
         io.to(data.connectedUserSocketId).emit('user-hanged-up');
     });
-   
+
+    socket.on("join_room", (data) => {
+        socket.join(data);
+        console.log(`User with ID: ${socket.id} joined room: ${data}`);
+    });
+
+    socket.on("send_message", (data) => {
+        console.log(data);
+        socket.to(data.room).emit("receive_message", data);
+    });
+
 });

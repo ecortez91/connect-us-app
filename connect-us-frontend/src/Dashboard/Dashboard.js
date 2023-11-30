@@ -41,7 +41,7 @@ const Dashboard = ( {username, callState} ) => {
             </div>
             <div className="dashboard_right_section background_secondary_color">
               <div className="dashboard_active_users_list">
-                <ActiveUsersList /> 
+                <ActiveUsersList username={username}/>
               </div>
               <div className="dashboard_logo_container">
                 Connect Us! 

@@ -9,7 +9,7 @@ const broadcastEventTypes = {
     ACTIVE_USERS: 'ACTIVE_USERS',
 };
 
-let socket;
+export let socket;
 
 export const connectWithWebSocket = () => {
     socket = socketClient(SERVER);
@@ -46,6 +46,10 @@ export const connectWithWebSocket = () => {
     socket.on('user-hanged-up', () => {
         webRTCHandler.handleUserHangedUp();
     });
+
+    //socket.on('receive_message', (data) => {
+    //    console.log("DATA MESSAGE", data);
+    //});
 };
 
 export const registerNewUser = (username, avatarUrl) => {
@@ -92,6 +96,14 @@ export const sendWebRTCCandidate = (data) => {
 export const sendUserHangedUp = (data) => {
     socket.emit('user-hanged-up', data);
 }
+
+export const joinRoom = (room) => {
+    socket.emit("join_room", room);
+}
+
+//export const sendMessage = (messageData) => {
+//    socket.emit("send_message", messageData);
+//}
 
 const handleBroadcastEvents = (data) => {
     switch (data.event) {

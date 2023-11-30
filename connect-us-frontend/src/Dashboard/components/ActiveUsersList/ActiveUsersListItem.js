@@ -4,12 +4,18 @@ import { getLocalAudioStream, getLocalStream } from '../../../utils/webRTC/webRT
 import ConversationButton from '../ConversationButtons/ConversationButton';
 import { chatTypes, getActions } from "../../../store/actions/chatActions";
 import { connect } from "react-redux";
+import { joinRoom } from '../../../utils/wssConnection/wssConnection';
 
 const ActiveUsersListItem = (props) => {
-  const { activeUser, setChosenChatDetails } = props;
+  const { activeUser, setChosenChatDetails, username } = props;
 
   const handleChooseActiveConversation = () => {
     setChosenChatDetails( { id: activeUser.socketId, name: activeUser.username, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
+    if (username !== "") {
+      //TODO: remove hardcoded room and create it from code
+      //console.log("JOINING ROOM")
+      joinRoom('ed-ted');
+    }
   }
 
   const handleListItemPressed = (e) => {
@@ -18,6 +24,7 @@ const ActiveUsersListItem = (props) => {
       } else {
         getLocalAudioStream(activeUser);
       }
+      handleChooseActiveConversation();
   };
 
   return (

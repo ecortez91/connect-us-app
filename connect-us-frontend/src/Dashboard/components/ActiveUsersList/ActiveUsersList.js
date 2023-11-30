@@ -3,7 +3,7 @@ import ActiveUsersListItem from './ActiveUsersListItem';
 import { connect } from 'react-redux';
 import './ActiveUsersList.css';
 
-const ActiveUsersList = ( { activeUsers, callState } ) => {
+const ActiveUsersList = ( { activeUsers, callState, username } ) => {
   return (
     <div className='active_user_list_container'>
       {activeUsers.map((activeUser) =>
@@ -11,6 +11,7 @@ const ActiveUsersList = ( { activeUsers, callState } ) => {
           key={activeUser.socketId}
           activeUser={activeUser}
           callState={callState}
+          username={username}
         />)}
     </div>
   );
