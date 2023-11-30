@@ -14,7 +14,10 @@ const ActiveUsersListItem = (props) => {
     if (username !== "") {
       //TODO: remove hardcoded room and create it from code
       //console.log("JOINING ROOM")
-      joinRoom('ed-ted');
+      const roomNames = [username, activeUser.username].sort()
+      const roomName = roomNames.join('-');
+      console.log("ROOMNAME IN ACTIVEUSERLISTCLICK", roomName)
+      joinRoom(roomName);
     }
   }
 

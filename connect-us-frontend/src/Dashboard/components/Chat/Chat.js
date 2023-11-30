@@ -15,6 +15,7 @@ const Chat = (props) => {
         username,
         chosenChatDetails
     } = props;
+    console.log("PROPS ARE", props);
 
     useEffect(() => {
         socket.on("receive_message", (data) => {
@@ -37,8 +38,11 @@ const Chat = (props) => {
     const sendMessageOnClick = async () => {
         if (currentMessage !== "" ) {
             //object with more data
+            const roomNames = [username, name].sort();
+            const roomName = roomNames.join('-');
+            console.log("roomName on SEND MESSAGE", roomName);
             const messageData = {
-                room: 'ed-ted',
+                room : roomName,
                 author: username,
                 message: currentMessage,
                 time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
@@ -97,6 +101,7 @@ const Chat = (props) => {
 };
 
 function mapStoreStateToProps (state) {
+    console.log("STATE", state)
     return {
         name: state.chat.chosenChatDetails?.name,
         id: state.chat.chosenChatDetails?.id,
