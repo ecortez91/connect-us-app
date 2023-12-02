@@ -4,7 +4,8 @@ import { getLocalAudioStream, getLocalStream } from '../../../utils/webRTC/webRT
 import ConversationButton from '../ConversationButtons/ConversationButton';
 import { chatTypes, getActions } from "../../../store/actions/chatActions";
 import { connect } from "react-redux";
-import { joinRoom } from '../../../utils/wssConnection/wssConnection';
+import { joinRoom, socket } from '../../../utils/wssConnection/wssConnection';
+import { useEffect } from 'react';
 
 const ActiveUsersListItem = (props) => {
   const { activeUser, setChosenChatDetails, username } = props;
@@ -17,9 +18,18 @@ const ActiveUsersListItem = (props) => {
       const roomNames = [username, activeUser.username].sort()
       const roomName = roomNames.join('-');
       console.log("ROOMNAME IN ACTIVEUSERLISTCLICK", roomName)
-      joinRoom(roomName);
+      //joinRoom(roomName);
     }
   }
+
+  useEffect(() => {
+      socket.on("receive_message", (data) => {
+        console.log("RECEIVED MESSAGE", data)
+        console.log("ACTIVE USER IS", activeUser)
+        //handleChooseActiveConversation();
+        setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: "" }, chatTypes.DIRECT );
+      });
+  });
 
   const handleListItemPressed = (e) => {
       if (e.target.value === 'VIDEO') {

@@ -40,13 +40,16 @@ const Chat = (props) => {
             //object with more data
             const roomNames = [username, name].sort();
             const roomName = roomNames.join('-');
-            console.log("roomName on SEND MESSAGE", roomName);
+            //console.log("roomName on SEND MESSAGE", roomName);
             const messageData = {
                 room : roomName,
                 author: username,
                 message: currentMessage,
-                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
+                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
+                socketId: id,
+                authorSocketId: socket.id
             };
+            console.log("MESSAGE DATA IS:", messageData)
             //simple object needed so far
             const messageData2 = {
                 sender: username,
