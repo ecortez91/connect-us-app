@@ -29,7 +29,7 @@ const ActiveUsersListItem = (props) => {
         //handleChooseActiveConversation();
         setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
       });
-  });
+  }, []);
 
   const handleListItemPressed = (e) => {
       if (e.target.value === 'VIDEO') {

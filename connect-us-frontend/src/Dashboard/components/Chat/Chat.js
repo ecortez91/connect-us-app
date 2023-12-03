@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './Chat.css';
 import userAvatar from '../../../resources/userAvatar.png';
 import { sendMessage, socket } from '../../../utils/wssConnection/wssConnection';
+import { chatTypes, getActions } from "../../../store/actions/chatActions";
 
 const Chat = (props) => {
     const [currentMessage, setCurrentMessage] = useState('');
@@ -13,17 +14,33 @@ const Chat = (props) => {
         name,
         avatarUrl,
         username,
-        chosenChatDetails
+        chosenChatDetails,
+        setChosenChatDetails
     } = props;
 
+    let newName = '';
+    console.log("PROPS ARE", props);
     useEffect(() => {
         socket.on("receive_message", (data) => {
-            console.log("INSIDE receive_message", data);
+          console.log("DATA FOR AUTHOR IS: ", data)
+          console.log("NAME IS: ", name)
+          console.log("USERNAME IS: ", username)
+          console.log("LENGT IS: ", messageList.length)
             const txt = {
                 sender: data.author,
                 text: data.message
             }
+          if (messageList.length === 0 || name === data.author)
+          {
+            console.log("INSIDE receive_message", data);
             setMessageList((list) => [...list, txt]);
+          } else {
+            setMessageList([]);
+            setMessageList((list) => [...list, txt]);
+            newName = data.author;
+            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: "" }, chatTypes.DIRECT );
+            console.log("USER CHANGED", newName);
+          }
         });
         return () => socket.removeListener('receive_message')
     });
@@ -55,6 +72,7 @@ const Chat = (props) => {
                 text: currentMessage,
             };
             messages.push(messageData2);
+
             await socket.emit("send_message", messageData);
             setMessageList((list) => [...list, messageData2]);
             setCurrentMessage("");
@@ -74,7 +92,7 @@ const Chat = (props) => {
             <div className="chat-popup">
               <div className="chat-header background_secondary_color">
                <div className='chat_user_avatar_container'>
-                    <img className='chat_user_avatar' src={avatarUrl || userAvatar} alt={name} /><div className='chat_user_name'>{name}</div>
+                    <img className='chat_user_avatar' src={avatarUrl || userAvatar} alt={name} /><div className='chat_user_name'>{newName? newName: name}</div>
                </div>
                { /** <div className="chat-popup-close"><button style={{  }}>X</button> </div> */ }
               </div>
@@ -114,4 +132,9 @@ function mapStoreStateToProps (state) {
     };
 }
 
-export default connect(mapStoreStateToProps)(Chat);
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+export default connect(mapStoreStateToProps, mapActionsToProps)(Chat);

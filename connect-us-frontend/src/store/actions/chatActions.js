@@ -31,3 +31,9 @@ export const setMessages = (messages) => {
     messages
   };
 };
+
+export const clearMessageList = () => {
+  return {
+    type: chatActions.CLEAR_MESSAGES // Action to clear messages
+  };
+};
