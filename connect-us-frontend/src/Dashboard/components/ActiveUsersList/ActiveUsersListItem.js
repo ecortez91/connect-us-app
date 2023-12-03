@@ -39,7 +39,7 @@ const ActiveUsersListItem = (props) => {
       } else {
         getLocalAudioStream(activeUser);
       }
-      handleChooseActiveConversation();
+      //handleChooseActiveConversation();
   };
 
   return (

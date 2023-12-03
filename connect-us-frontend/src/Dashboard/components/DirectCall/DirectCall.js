@@ -36,7 +36,6 @@ const DirectCall = (props) => {
         { callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername}/> }
         { callingDialogVisible && <CallingDialog /> }
         { remoteStream && callState === callStates.CALL_IN_PROGRESS && <ConversationButtons { ...props }/> }
-        { remoteStream && callState === callStates.CALL_IN_PROGRESS && <Messenger setDirectCallMessage={setDirectCallMessage} message={message}/> }
         { <Chat messageList={messageList} setMessageList={setMessageList} /> }
         </>
     );
