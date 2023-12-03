@@ -7,7 +7,6 @@ import { chatTypes, getActions } from "../../../store/actions/chatActions";
 
 const Chat = (props) => {
     const [currentMessage, setCurrentMessage] = useState('');
-    const [messageList, setMessageList] = useState([]);
 
     const { 
         id,
@@ -15,7 +14,9 @@ const Chat = (props) => {
         avatarUrl,
         username,
         chosenChatDetails,
-        setChosenChatDetails
+        setChosenChatDetails,
+        messageList,
+        setMessageList
     } = props;
 
     let newName = '';
@@ -38,7 +39,7 @@ const Chat = (props) => {
             setMessageList([]);
             setMessageList((list) => [...list, txt]);
             newName = data.author;
-            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: "" }, chatTypes.DIRECT );
+            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: data.avatarUrl }, chatTypes.DIRECT );
             console.log("USER CHANGED", newName);
           }
         });
@@ -63,7 +64,8 @@ const Chat = (props) => {
                 message: currentMessage,
                 time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
                 socketId: id,
-                authorSocketId: socket.id
+                authorSocketId: socket.id,
+                avatarUrl: chosenChatDetails.avatarUrl
             };
             console.log("MESSAGE DATA IS:", messageData)
             //simple object needed so far

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ActiveUsersList from "./components/ActiveUsersList/ActiveUsersList";
 import * as webRTCHandler from "../utils/webRTC/webRTCHandler";
 import DirectCall from './components/DirectCall/DirectCall'
@@ -21,6 +21,7 @@ const Dashboard = ( {username, callState} ) => {
       }
     ).catch(err => console.log(err));
   }, []);
+  const [messageList, setMessageList] = useState([]);
 
  const handleLogout = () => {
     window.location.href = "/";
@@ -34,14 +35,14 @@ const Dashboard = ( {username, callState} ) => {
         <div className="dashboard_container background_main_color">
             <div className="dashboard_left_section">
                 <div className="dashboard_content_container">
-                  <DirectCall />
+                  <DirectCall messageList={messageList} setMessageList={setMessageList}/>
                   { callState !== callStates.CALL_IN_PROGRESS && <DashboardInformation username={username} /> }
                 </div>
                 <a href="#" onClick={handleLogout} style={ { paddingLeft: '25px', textDecoration:'none', color: 'whitesmoke', cursor:'pointer'} }>Click here to Logout</a>
             </div>
             <div className="dashboard_right_section background_secondary_color">
               <div className="dashboard_active_users_list">
-                <ActiveUsersList username={username}/>
+                <ActiveUsersList username={username} messageList={messageList} setMessageList={setMessageList}/>
               </div>
               <div className="dashboard_logo_container">
                 Connect Us! 

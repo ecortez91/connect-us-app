@@ -8,11 +8,13 @@ import { joinRoom, socket } from '../../../utils/wssConnection/wssConnection';
 import { useEffect } from 'react';
 
 const ActiveUsersListItem = (props) => {
-  const { activeUser, setChosenChatDetails, username } = props;
+  const { activeUser, setChosenChatDetails, username, messageList, setMessageList } = props;
 
   const handleChooseActiveConversation = () => {
-    setChosenChatDetails( { id: activeUser.socketId, name: activeUser.username, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
+    let cleanUsername = activeUser.username.replace(" (Busy)", "");
+    setChosenChatDetails( { id: activeUser.socketId, name: cleanUsername, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
     if (username !== "") {
+      setMessageList([]);
       //TODO: remove hardcoded room and create it from code
       //console.log("JOINING ROOM")
       const roomNames = [username, activeUser.username].sort()

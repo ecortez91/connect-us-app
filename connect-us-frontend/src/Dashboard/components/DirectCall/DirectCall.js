@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import LocalVideoView from '../LocalVideoView/LocalVideoView';
 import RemoteVideoView from '../RemoteVideoView/RemoteVideoView';
@@ -20,7 +20,9 @@ const DirectCall = (props) => {
         callRejected,
         hideCallRejectedDialog,
         setDirectCallMessage,
-        message
+        message,
+        messageList,
+        setMessageList
     } = props;
 
     return (
@@ -35,7 +37,7 @@ const DirectCall = (props) => {
         { callingDialogVisible && <CallingDialog /> }
         { remoteStream && callState === callStates.CALL_IN_PROGRESS && <ConversationButtons { ...props }/> }
         { remoteStream && callState === callStates.CALL_IN_PROGRESS && <Messenger setDirectCallMessage={setDirectCallMessage} message={message}/> }
-        { <Chat /> }
+        { <Chat messageList={messageList} setMessageList={setMessageList} /> }
         </>
     );
 };
