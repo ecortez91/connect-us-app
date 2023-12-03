@@ -15,7 +15,6 @@ const Chat = (props) => {
         username,
         chosenChatDetails
     } = props;
-    console.log("PROPS ARE", props);
 
     useEffect(() => {
         socket.on("receive_message", (data) => {

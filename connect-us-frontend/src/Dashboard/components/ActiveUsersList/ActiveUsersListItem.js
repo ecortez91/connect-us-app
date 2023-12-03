@@ -27,7 +27,7 @@ const ActiveUsersListItem = (props) => {
         console.log("RECEIVED MESSAGE", data)
         console.log("ACTIVE USER IS", activeUser)
         //handleChooseActiveConversation();
-        setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: "" }, chatTypes.DIRECT );
+        setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
       });
   });
 
