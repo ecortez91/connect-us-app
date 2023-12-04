@@ -4,6 +4,8 @@ import './Chat.css';
 import userAvatar from '../../../resources/userAvatar.png';
 import { sendMessage, socket } from '../../../utils/wssConnection/wssConnection';
 import { chatTypes, getActions } from "../../../store/actions/chatActions";
+import ScrollToBottom from 'react-scroll-to-bottom';
+
 
 const Chat = (props) => {
     const [currentMessage, setCurrentMessage] = useState('');
@@ -89,7 +91,8 @@ const Chat = (props) => {
         ));
     };
 
-    return (
+   return  props.chosenChatDetails ?
+    (
         <>
             <div className="chat-popup">
               <div className="chat-header background_secondary_color">
@@ -98,11 +101,11 @@ const Chat = (props) => {
                </div>
                { /** <div className="chat-popup-close"><button style={{  }}>X</button> </div> */ }
               </div>
-              <div className="chat-messages">
+                <ScrollToBottom className='chat-messages'>
                 {
                     renderMessages()
                 }
-              </div>
+                </ScrollToBottom>
               <div className="chat-input">
                 <input
                   type="text"
@@ -119,7 +122,7 @@ const Chat = (props) => {
               </div>
             </div>
         </>
-    );
+    ) : ""
 };
 
 function mapStoreStateToProps (state) {
