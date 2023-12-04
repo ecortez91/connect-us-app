@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import DashboardInformation from "./components/DashboardInformation/DashboardInformation";
 import { callStates } from "../store/actions/callActions";
 import axios from 'axios';
+import Chat from "./components/Chat/Chat";
 
 import './Dashboard.css';
 import { setTurnServes } from "../utils/webRTC/TURN";
@@ -24,6 +25,7 @@ const Dashboard = ( {username, callState} ) => {
   const [messageList, setMessageList] = useState([]);
 
  const handleLogout = () => {
+    localStorage.clear();
     window.location.href = "/";
   };
 
@@ -40,6 +42,7 @@ const Dashboard = ( {username, callState} ) => {
                 </div>
                 <a href="#" onClick={handleLogout} style={ { paddingLeft: '25px', textDecoration:'none', color: 'whitesmoke', cursor:'pointer'} }>Click here to Logout</a>
             </div>
+        { <Chat messageList={messageList} setMessageList={setMessageList} /> }
             <div className="dashboard_right_section background_secondary_color">
               <div className="dashboard_active_users_list">
                 <ActiveUsersList username={username} messageList={messageList} setMessageList={setMessageList}/>

@@ -22,7 +22,6 @@ const Chat = (props) => {
     } = props;
 
     let newName = '';
-    console.log("PROPS ARE", props);
     useEffect(() => {
         socket.on("receive_message", (data) => {
           console.log("DATA FOR AUTHOR IS: ", data)
@@ -33,7 +32,10 @@ const Chat = (props) => {
                 sender: data.author,
                 text: data.message
             }
-          if (messageList.length === 0 || name === data.author)
+          if (messageList.length === 0) {
+            console.log("inside first message")
+          }
+          else if (name === data.author)
           {
             console.log("INSIDE receive_message", data);
             setMessageList((list) => [...list, txt]);
@@ -42,24 +44,29 @@ const Chat = (props) => {
             setMessageList((list) => [...list, txt]);
             newName = data.author;
             setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: data.avatarUrl }, chatTypes.DIRECT );
-            console.log("USER CHANGED", newName);
           }
         });
         return () => socket.removeListener('receive_message')
     });
 
-    let messages = [
-       { sender: 'Ted', text: 'Hi there!' },
-       { sender: 'Ed', text: 'Hey, how are you?' },
-       { sender: 'Ted', text: "I'm good, thanks!" },
-   ];
+    useEffect(() => {
+      if (name) {
+        const roomNames = [username, name].sort();
+        const roomName = roomNames.join('-');
+        const storedMessageList = localStorage.getItem(`messageList_${roomName}`);
+        if (storedMessageList) {
+          setMessageList((prevMessageList) => {
+            return [...prevMessageList, ...JSON.parse(storedMessageList)];
+          });
+        }
+      }
+    }, [name, setMessageList]);
 
     const sendMessageOnClick = async () => {
         if (currentMessage !== "" ) {
             //object with more data
             const roomNames = [username, name].sort();
             const roomName = roomNames.join('-');
-            //console.log("roomName on SEND MESSAGE", roomName);
             const messageData = {
                 room : roomName,
                 author: username,
@@ -75,15 +82,22 @@ const Chat = (props) => {
                 sender: username,
                 text: currentMessage,
             };
-            messages.push(messageData2);
-
             await socket.emit("send_message", messageData);
-            setMessageList((list) => [...list, messageData2]);
+            //setMessageList((list) => [...list, messageData2]);
+            setMessageList((list) => {
+                const updatedList = [...list, messageData2];
+                console.log('ABOUT TO SET LOCALSTORAGE WITH', updatedList)
+                localStorage.setItem(`messageList_${roomName}`, JSON.stringify(updatedList)); // Set localStorage after updating messageList
+                return updatedList;
+            });
+
             setCurrentMessage("");
+            //localStorage.setItem(`messageList_${roomName}`, JSON.stringify(messageList));
         }
     }
 
     const renderMessages = () => {
+      console.log("INSIDE REDENR MESSAGES MESSAGELIST", messageList)
         return messageList.map((message, index) => (
           <div key={index} className={message.sender === name ? 'received' : 'sent'}>
             {message.text}
@@ -126,7 +140,7 @@ const Chat = (props) => {
 };
 
 function mapStoreStateToProps (state) {
-    console.log("STATE", state)
+    //console.log("STATE", state)
     return {
         name: state.chat.chosenChatDetails?.name,
         id: state.chat.chosenChatDetails?.id,
