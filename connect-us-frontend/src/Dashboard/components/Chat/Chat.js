@@ -24,6 +24,7 @@ const Chat = (props) => {
     let newName = '';
     useEffect(() => {
         socket.on("receive_message", (data) => {
+          console.log("[CHAT] Receive Message", data)
           const txt = {
               sender: data.author,
               text: data.message
@@ -31,14 +32,31 @@ const Chat = (props) => {
           const cleanAuthor =  data.author.replace(' (Busy)', "")
           const avatarUserSelected = activeUsers.find(user => user.username.replace(' (Busy)', "") === cleanAuthor);
           if (messageList.length === 0) {
+            console.log("[CHAT] Receive Message LENGTH 0")
             setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected?.avatarUrl ? avatarUserSelected.avatarUrl : ""}, chatTypes.DIRECT );
+            updateConversation();
           }
           else if (name === data.author) {
-            setMessageList((list) => [...list, txt]);
+            console.log("[CHAT] Receive Message SAME AUTHOR")
+            updateConversation();
           } else {
+            console.log("[CHAT] Receive Message OTHER AUTHOR")
             setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected?.avatarUrl ? avatarUserSelected.avatarUrl : ""}, chatTypes.DIRECT );
             setMessageList([]);
+            updateConversation();
             newName = data.author;
+          }
+
+          function updateConversation() {
+            setMessageList((list) => {
+                if (typeof txt === 'object') {
+                  const exists = list.some(item => JSON.stringify(item) === JSON.stringify(txt));
+                  if (!exists) {
+                    return [...list, txt];
+                  }
+                }
+                return list;
+            });
           }
         });
         return () => socket.removeListener('receive_message')
