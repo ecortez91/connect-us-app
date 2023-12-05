@@ -46,10 +46,6 @@ export const connectWithWebSocket = () => {
     socket.on('user-hanged-up', () => {
         webRTCHandler.handleUserHangedUp();
     });
-
-    //socket.on('receive_message', (data) => {
-    //    console.log("DATA MESSAGE", data);
-    //});
 };
 
 export const registerNewUser = (username, avatarUrl) => {

@@ -24,24 +24,21 @@ const Chat = (props) => {
     let newName = '';
     useEffect(() => {
         socket.on("receive_message", (data) => {
-            const txt = {
-                sender: data.author,
-                text: data.message
-            }
-            const cleanAuthor =  data.author.replace(' (Busy)', "")
-            const avatarUserSelected = activeUsers.find(user => user.username.replace(' (Busy)', "") === cleanAuthor);
+          const txt = {
+              sender: data.author,
+              text: data.message
+          }
+          const cleanAuthor =  data.author.replace(' (Busy)', "")
+          const avatarUserSelected = activeUsers.find(user => user.username.replace(' (Busy)', "") === cleanAuthor);
           if (messageList.length === 0) {
             setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected?.avatarUrl ? avatarUserSelected.avatarUrl : ""}, chatTypes.DIRECT );
           }
-          else if (name === data.author)
-          {
-            console.log("INSIDE receive_message", data);
+          else if (name === data.author) {
             setMessageList((list) => [...list, txt]);
           } else {
-            setMessageList([]);
-            setMessageList((list) => [...list, txt]);
-            newName = data.author;
             setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected?.avatarUrl ? avatarUserSelected.avatarUrl : ""}, chatTypes.DIRECT );
+            setMessageList([]);
+            newName = data.author;
           }
         });
         return () => socket.removeListener('receive_message')
@@ -65,7 +62,7 @@ const Chat = (props) => {
             //object with more data
             const roomNames = [username, name].sort();
             const roomName = roomNames.join('-');
-            const messageData = {
+            const fullMessageData = {
                 room : roomName,
                 author: username,
                 message: currentMessage,
@@ -73,17 +70,15 @@ const Chat = (props) => {
                 socketId: id,
                 authorSocketId: socket.id
             };
-            console.log("MESSAGE DATA IS:", messageData)
+            console.log("MESSAGE DATA IS:", fullMessageData)
             //simple object needed so far
-            const messageData2 = {
+            const messageData = {
                 sender: username,
                 text: currentMessage,
             };
-            await socket.emit("send_message", messageData);
-            //setMessageList((list) => [...list, messageData2]);
+            await socket.emit("send_message", fullMessageData);
             setMessageList((list) => {
-                const updatedList = [...list, messageData2];
-                console.log('ABOUT TO SET LOCALSTORAGE WITH', updatedList)
+                const updatedList = [...list, messageData];
                 localStorage.setItem(`messageList_${roomName}`, JSON.stringify(updatedList)); // Set localStorage after updating messageList
                 return updatedList;
             });
@@ -136,7 +131,6 @@ const Chat = (props) => {
 };
 
 function mapStoreStateToProps (state) {
-    //console.log("STATE", state)
     return {
         name: state.chat.chosenChatDetails?.name,
         id: state.chat.chosenChatDetails?.id,

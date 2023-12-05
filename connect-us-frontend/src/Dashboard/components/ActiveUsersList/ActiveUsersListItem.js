@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 const ActiveUsersListItem = (props) => {
   const { activeUser, setChosenChatDetails, username, messageList, setMessageList } = props;
   const activeUsers = useSelector(state => state.dashboard.activeUsers);
+  const call = useSelector(state => state.call);
   const selectedUser = useSelector(state => state.chat?.chosenChatDetails?.name);
 
   const handleChooseActiveConversation = () => {
@@ -24,8 +25,6 @@ const ActiveUsersListItem = (props) => {
 
   useEffect(() => {
       socket.on("receive_message", (data) => {
-        console.log("RECEIVED MESSAGE", data)
-        console.log("ACTIVE USER IS", activeUser)
         const userSelected = activeUsers.find(user => user.username === data.author);
         setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: userSelected?.avatarUrl || "" }, chatTypes.DIRECT );
       });
@@ -33,11 +32,13 @@ const ActiveUsersListItem = (props) => {
   }, []);
 
   const handleListItemPressed = (e) => {
+    if (call.callState === 'CALL_AVAILABLE') {
       if (e.target.value === 'VIDEO') {
         getLocalStream(activeUser);
       } else {
         getLocalAudioStream(activeUser);
       }
+    }
   };
 
   return (
