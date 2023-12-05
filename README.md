@@ -46,7 +46,7 @@ https://connect-us-frontend-8c648836da4c.herokuapp.com/
 - Go to the user1 tab and a pop-up will appear where you can accept or reject the call, accept the call invitation from user2
 - You can also reject the call and the caller will get notified with a pop-up
 - A webRTC call is stablished
-- You're able to chat with other users as well after clicking the chat icon (made with Socket.IO and localStorage to store conversations)
+- You're able to chat with other users as well, after clicking the chat icon the conversation with the selected user will appear in the ChatPanel (made with Socket.IO and localStorage to store conversations)
 - You have the option to end the call
 - You are able to see the users that are currently in a call (shown as "Busy")
 - You won't be able to make a call to "Busy" users
