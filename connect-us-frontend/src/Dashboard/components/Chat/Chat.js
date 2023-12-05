@@ -24,18 +24,14 @@ const Chat = (props) => {
     let newName = '';
     useEffect(() => {
         socket.on("receive_message", (data) => {
-          console.log("DATA FOR AUTHOR IS: ", data)
-          console.log("NAME IS: ", name)
-          console.log("USERNAME IS: ", username)
-          console.log("LENGT IS: ", messageList.length)
             const txt = {
                 sender: data.author,
                 text: data.message
             }
-            const avatarUserSelected = activeUsers.find(user => user.username === data.author);
+            const cleanAuthor =  data.author.replace(' (Busy)', "")
+            const avatarUserSelected = activeUsers.find(user => user.username.replace(' (Busy)', "") === cleanAuthor);
           if (messageList.length === 0) {
-            console.log("inside first message")
-            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected.avatarUrl}, chatTypes.DIRECT );
+            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected?.avatarUrl ? avatarUserSelected.avatarUrl : ""}, chatTypes.DIRECT );
           }
           else if (name === data.author)
           {
@@ -45,7 +41,7 @@ const Chat = (props) => {
             setMessageList([]);
             setMessageList((list) => [...list, txt]);
             newName = data.author;
-            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected.avatarUrl}, chatTypes.DIRECT );
+            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected?.avatarUrl ? avatarUserSelected.avatarUrl : ""}, chatTypes.DIRECT );
           }
         });
         return () => socket.removeListener('receive_message')

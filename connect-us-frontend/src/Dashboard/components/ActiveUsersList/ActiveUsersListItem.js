@@ -10,18 +10,15 @@ import { useEffect } from 'react';
 const ActiveUsersListItem = (props) => {
   const { activeUser, setChosenChatDetails, username, messageList, setMessageList } = props;
   const activeUsers = useSelector(state => state.dashboard.activeUsers);
+  const selectedUser = useSelector(state => state.chat?.chosenChatDetails?.name);
 
   const handleChooseActiveConversation = () => {
     let cleanUsername = activeUser.username.replace(" (Busy)", "");
-    setChosenChatDetails( { id: activeUser.socketId, name: cleanUsername, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
-    if (username !== "") {
-      setMessageList([]);
-      //TODO: remove hardcoded room and create it from code
-      //console.log("JOINING ROOM")
-      const roomNames = [username, activeUser.username].sort()
-      const roomName = roomNames.join('-');
-      console.log("ROOMNAME IN ACTIVEUSERLISTCLICK", roomName)
-      //joinRoom(roomName);
+    if (selectedUser !== cleanUsername) {
+      setChosenChatDetails( { id: activeUser.socketId, name: cleanUsername, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
+      if (username !== "") {
+        setMessageList([]);
+      }
     }
   }
 
