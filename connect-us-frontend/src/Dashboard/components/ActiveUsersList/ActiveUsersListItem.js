@@ -3,12 +3,13 @@ import userAvatar from '../../../resources/userAvatar.png';
 import { getLocalAudioStream, getLocalStream } from '../../../utils/webRTC/webRTCHandler';
 import ConversationButton from '../ConversationButtons/ConversationButton';
 import { chatTypes, getActions } from "../../../store/actions/chatActions";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { joinRoom, socket } from '../../../utils/wssConnection/wssConnection';
 import { useEffect } from 'react';
 
 const ActiveUsersListItem = (props) => {
   const { activeUser, setChosenChatDetails, username, messageList, setMessageList } = props;
+  const activeUsers = useSelector(state => state.dashboard.activeUsers);
 
   const handleChooseActiveConversation = () => {
     let cleanUsername = activeUser.username.replace(" (Busy)", "");
@@ -28,9 +29,10 @@ const ActiveUsersListItem = (props) => {
       socket.on("receive_message", (data) => {
         console.log("RECEIVED MESSAGE", data)
         console.log("ACTIVE USER IS", activeUser)
-        //handleChooseActiveConversation();
-        setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: activeUser.avatarUrl }, chatTypes.DIRECT );
+        const userSelected = activeUsers.find(user => user.username === data.author);
+        setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: userSelected?.avatarUrl || "" }, chatTypes.DIRECT );
       });
+      return () => socket.removeListener('receive_message')
   }, []);
 
   const handleListItemPressed = (e) => {
@@ -39,7 +41,6 @@ const ActiveUsersListItem = (props) => {
       } else {
         getLocalAudioStream(activeUser);
       }
-      //handleChooseActiveConversation();
   };
 
   return (

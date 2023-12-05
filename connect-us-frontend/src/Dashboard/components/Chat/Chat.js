@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import './Chat.css';
 import userAvatar from '../../../resources/userAvatar.png';
 import { sendMessage, socket } from '../../../utils/wssConnection/wssConnection';
@@ -9,7 +9,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 
 const Chat = (props) => {
     const [currentMessage, setCurrentMessage] = useState('');
-
+    const activeUsers = useSelector(state => state.dashboard.activeUsers);
     const { 
         id,
         name,
@@ -32,8 +32,10 @@ const Chat = (props) => {
                 sender: data.author,
                 text: data.message
             }
+            const avatarUserSelected = activeUsers.find(user => user.username === data.author);
           if (messageList.length === 0) {
             console.log("inside first message")
+            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected.avatarUrl}, chatTypes.DIRECT );
           }
           else if (name === data.author)
           {
@@ -43,7 +45,7 @@ const Chat = (props) => {
             setMessageList([]);
             setMessageList((list) => [...list, txt]);
             newName = data.author;
-            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: data.avatarUrl }, chatTypes.DIRECT );
+            setChosenChatDetails( { id: data.authorSocketId, name: data.author, avatarUrl: avatarUserSelected.avatarUrl}, chatTypes.DIRECT );
           }
         });
         return () => socket.removeListener('receive_message')
@@ -73,8 +75,7 @@ const Chat = (props) => {
                 message: currentMessage,
                 time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
                 socketId: id,
-                authorSocketId: socket.id,
-                avatarUrl: chosenChatDetails.avatarUrl
+                authorSocketId: socket.id
             };
             console.log("MESSAGE DATA IS:", messageData)
             //simple object needed so far
@@ -97,7 +98,6 @@ const Chat = (props) => {
     }
 
     const renderMessages = () => {
-      console.log("INSIDE REDENR MESSAGES MESSAGELIST", messageList)
         return messageList.map((message, index) => (
           <div key={index} className={message.sender === name ? 'received' : 'sent'}>
             {message.text}
@@ -111,7 +111,7 @@ const Chat = (props) => {
             <div className="chat-popup">
               <div className="chat-header background_secondary_color">
                <div className='chat_user_avatar_container'>
-                    <img className='chat_user_avatar' src={avatarUrl || userAvatar} alt={name} /><div className='chat_user_name'>{newName? newName: name}</div>
+                    <img className='chat_user_avatar' src={chosenChatDetails.avatarUrl || userAvatar} alt={name} /><div className='chat_user_name'>{newName? newName: name}</div>
                </div>
                { /** <div className="chat-popup-close"><button style={{  }}>X</button> </div> */ }
               </div>
