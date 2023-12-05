@@ -27,7 +27,8 @@ const Chat = (props) => {
           console.log("[CHAT] Receive Message", data)
           const txt = {
               sender: data.author,
-              text: data.message
+              text: data.message,
+              time: data.time
           }
           const cleanAuthor =  data.author.replace(' (Busy)', "")
           const avatarUserSelected = activeUsers.find(user => user.username.replace(' (Busy)', "") === cleanAuthor);
@@ -84,15 +85,16 @@ const Chat = (props) => {
                 room : roomName,
                 author: username,
                 message: currentMessage,
-                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
+                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes() + ":" + new Date(Date.now()).getSeconds() + "." + new Date(Date.now()).getMilliseconds(),
                 socketId: id,
                 authorSocketId: socket.id
             };
-            console.log("MESSAGE DATA IS:", fullMessageData)
+            console.log("MESSAGE DATA IS:", fullMessageData);
             //simple object needed so far
             const messageData = {
                 sender: username,
                 text: currentMessage,
+                time: fullMessageData.time
             };
             await socket.emit("send_message", fullMessageData);
             setMessageList((list) => {
